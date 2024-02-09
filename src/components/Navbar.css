@@ -1,0 +1,22 @@
+nav {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #ec540e;
+  height: 50px;
+  gap: 50px;
+}
+
+nav a {
+  text-decoration: none;
+  color: white;
+  transition: all 0.3s;
+}
+
+nav a:hover {
+  color: cadetblue;
+}
+
+nav a svg {
+  margin-right: 5px;
+}
