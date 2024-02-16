@@ -36,10 +36,11 @@
   align-items: center;
 }
 
-.nameAndDeleteButton button {
+.nameAndDeleteButton .deleteButton {
   flex: 10%;
   background-color: rgb(255, 134, 134);
   color: white;
+  margin:0 5px;
   padding: 7px 15px;
   border-radius: 3px;
   border: none;
@@ -47,8 +48,23 @@
   transition: all 0.3s;
 }
 
-.nameAndDeleteButton button:hover {
+.nameAndDeleteButton .deleteButton:hover {
   background-color: rgb(255, 57, 57);
+}
+
+.nameAndDeleteButton .editButton {
+  flex: 10%;
+  background-color: rightgray;
+  color: black;
+  padding: 7px 15px;
+  border-radius: 3px;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s;
+}
+
+.nameAndDeleteButton .editButton:hover {
+  background-color: gray;
 }
 
 .nameAndDeleteButton h3 {
