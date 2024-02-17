@@ -6,6 +6,7 @@ import {
   faHouse,
   faFilePen,
   faArrowRightToBracket,
+  faUser,
 } from "@fortawesome/free-solid-svg-icons";
 
 const Navbar = ({ isAuth }) => {
@@ -14,6 +15,11 @@ const Navbar = ({ isAuth }) => {
       <Link to="/">
         <FontAwesomeIcon icon={faHouse} />
         ホーム
+      </Link>
+
+      <Link to="/mypage">
+        <FontAwesomeIcon icon={faUser} />
+        MyPage
       </Link>
 
       {!isAuth ? (

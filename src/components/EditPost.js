@@ -1,28 +1,34 @@
-import React, { useState } from "react";
-import { auth } from "../firebase";
+import React, { useEffect, useState } from "react";
+import { db } from "../firebase";
 import "./EditPost.css";
-import { updateDoc } from "firebase/firestore";
+import { updateDoc, doc } from "firebase/firestore";
 
-const EditPost = ({ hadleEdit, postList }) => {
+const EditPost = ({ editingId, onEditDone, onEditSubmit }) => {
   const [editTitle, setEditTitle] = useState();
   const [editText, setEditText] = useState();
+  const [docRef, setDocRef] = useState(null);
 
-  // console.log(postList);
-  const isIdPostList = postList.find(
-    (post) => post.author.id === auth.currentUser?.uid
-  );
+  useEffect(() => {
+    if (editingId) {
+      setDocRef(doc(db, "posts", editingId));
+    }
+  }, [editingId]);
 
-  const isTitle = isIdPostList.title;
-  const isPostText = isIdPostList.postsText;
+  // console.log(docRef);
 
-  // console.log(idMuchText);
+  const editDocument = async () => {
+    if (docRef) {
+      await updateDoc(docRef, {
+        title: editTitle,
+        postsText: editText,
+      });
+    }
 
-  const editPost = async () => {
-    await updateDoc(postList, {
-      title: editTitle,
-      postsText: editText,
-    });
+    onEditSubmit({ id: editingId, title: editTitle, postsText: editText });
+    onEditDone();
   };
+
+  if (!editingId) return null;
 
   return (
     <div className="createPostPage">
@@ -32,22 +38,22 @@ const EditPost = ({ hadleEdit, postList }) => {
           <div>タイトル</div>
           <input
             type="text"
-            placeholder={isPostText}
+            placeholder="aaa"
             onChange={(e) => setEditTitle(e.target.value)}
           />
         </div>
         <div className="inputPost">
           <div>投稿</div>
           <textarea
-            placeholder={isTitle}
+            placeholder="bbb"
             onChange={(e) => setEditText(e.target.value)}
           ></textarea>
         </div>
         <div className="buttons">
-          <button className="postButton" onClick={editPost}>
+          <button className="postButton" onClick={editDocument}>
             編集する
           </button>
-          <button className="closeButton" onClick={hadleEdit}>
+          <button className="closeButton" onClick={onEditDone}>
             閉じる
           </button>
         </div>
