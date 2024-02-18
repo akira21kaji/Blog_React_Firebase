@@ -18,5 +18,8 @@ export const UsePosts = (userId = null) => {
     fetchPosts();
   }, [userId]);
 
-  return posts;
+  return {
+    posts,
+    setPosts,
+  }
 };

@@ -1,31 +1,22 @@
 import {
   arrayRemove,
   arrayUnion,
-  collection,
   deleteDoc,
   doc,
-  getDocs,
   updateDoc,
 } from "firebase/firestore";
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { auth, db } from "../firebase";
 import "./Home.css";
 import EditPost from "./EditPost";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faHeart } from "@fortawesome/free-solid-svg-icons";
+import { UsePosts } from '../Hooks/UsePosts'
 
 const Home = ({ isAuth }) => {
-  const [postList, setPostList] = useState([]);
+  const { posts, setPosts } = UsePosts();
   const [editingId, setEditingId] = useState(null);
 
-  useEffect(() => {
-    const getPosts = async () => {
-      const data = await getDocs(collection(db, "posts"));
-
-      setPostList(data.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-    };
-    getPosts();
-  }, []);
 
   const handleDelete = async (id) => {
     await deleteDoc(doc(db, "posts", id));
@@ -41,7 +32,7 @@ const Home = ({ isAuth }) => {
   };
 
   const onEditSubmit = (editedPost) => {
-    setPostList((prevPosts) => {
+    setPosts((prevPosts) => {
       return prevPosts.map((post) => {
         if (post.id === editedPost.id) {
           return { ...post, ...editedPost };
@@ -57,7 +48,7 @@ const Home = ({ isAuth }) => {
       GoodIds: arrayUnion(auth.currentUser?.uid),
     });
 
-    setPostList((currentPosts) =>
+    setPosts((currentPosts) =>
       currentPosts.map((post) =>
         post.id === goodId
           ? {
@@ -74,7 +65,7 @@ const Home = ({ isAuth }) => {
       GoodIds: arrayRemove(auth.currentUser?.uid),
     });
 
-    setPostList((currentPosts) =>
+    setPosts((currentPosts) =>
       currentPosts.map((post) =>
         post.id === resetId
           ? {
@@ -91,7 +82,7 @@ const Home = ({ isAuth }) => {
   return (
     <>
       <div className="homepage">
-        {postList.map((post) => {
+        {posts.map((post) => {
           return (
             <div className="postContents" key={post.id}>
               <div className="postHeader">
