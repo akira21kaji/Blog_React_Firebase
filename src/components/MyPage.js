@@ -4,7 +4,7 @@ import { auth } from "../firebase";
 
 const Mypage = () => {
   // 現在のユーザーIDを使用して投稿を取得
-  const posts = UsePosts(auth.currentUser?.uid);
+  const { posts } = UsePosts(auth.currentUser?.uid);
 
   return (
     <div>
